@@ -7,8 +7,16 @@ import { Query } from "react-apollo";
 
 const StarButton = props => {
   console.log(props.node.stargazers.totalCount);
-  const totalCount = props.node.stargazers.totalCount;
-  return <button>{totalCount === 1 ? "1 star" : `${totalCount} stars`}</button>;
+  const node = props.node;
+  const totalCount = node.stargazers.totalCount;
+  const viewerHasStarred = node.viewerHasStarred;
+  const starCount = totalCount === 1 ? "1 star" : `${totalCount} stars`;
+  console.log(viewerHasStarred);
+  return (
+    <button>
+      {starCount} | {viewerHasStarred ? "starred" : "-"}
+    </button>
+  );
 };
 
 const PER_PAGE = 5;
@@ -92,7 +100,7 @@ class App extends Component {
                         >
                           {node.name}
                         </a>
-                        &nbsp
+                        &nbsp;
                         <StarButton node={node} />
                       </li>
                     );
