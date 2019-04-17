@@ -5,6 +5,12 @@ import client from "./client";
 
 import { Query } from "react-apollo";
 
+const StarButton = props => {
+  console.log(props.node.stargazers.totalCount);
+  const totalCount = props.node.stargazers.totalCount;
+  return <button>{totalCount === 1 ? "1 star" : `${totalCount} stars`}</button>;
+};
+
 const PER_PAGE = 5;
 const DEFAULT_STATE = {
   first: PER_PAGE,
@@ -52,7 +58,6 @@ class App extends Component {
 
   render() {
     const { query, first, last, before, after } = this.state;
-    console.log({ query });
     return (
       <ApolloProvider client={client}>
         <form onSubmit={this.handleSubmit}>
@@ -87,6 +92,8 @@ class App extends Component {
                         >
                           {node.name}
                         </a>
+                        &nbsp
+                        <StarButton node={node} />
                       </li>
                     );
                   })}
