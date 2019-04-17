@@ -92,6 +92,7 @@ class App extends Component {
                         >
                           {node.name}
                         </a>
+                        &nbsp
                         <StarButton node={node} />
                       </li>
                     );
