@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { SEARCH_REPOSITORIES, ADD_STAR } from "./graphql";
+import { SEARCH_REPOSITORIES, ADD_STAR, REMOVE_STAR } from "./graphql";
 import { ApolloProvider, Query, Mutation } from "react-apollo";
 import client from "./client";
 
@@ -9,14 +9,14 @@ const StarButton = props => {
   const totalCount = node.stargazers.totalCount;
   const viewerHasStarred = node.viewerHasStarred;
   const starCount = totalCount === 1 ? "1 star" : `${totalCount} stars`;
-  const StarStatus = ({ addStar }) => {
+  const StarStatus = ({ addOrRemoveStar }) => {
     return (
       <button
-        onClick={() => {
-          addStar({
+        onClick={() =>
+          addOrRemoveStar({
             variables: { input: { starrableId: node.id } }
-          });
-        }}
+          })
+        }
       >
         {starCount} | {viewerHasStarred ? "starred" : "-"}
       </button>
@@ -24,8 +24,8 @@ const StarButton = props => {
   };
 
   return (
-    <Mutation mutation={ADD_STAR}>
-      {addStar => <StarStatus addStar={addStar} />}
+    <Mutation mutation={viewerHasStarred ? REMOVE_STAR : ADD_STAR}>
+      {addOrRemoveStar => <StarStatus addOrRemoveStar={addOrRemoveStar} />}
     </Mutation>
   );
 };
